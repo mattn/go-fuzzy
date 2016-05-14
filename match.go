@@ -77,8 +77,7 @@ func Match(pattern, str string, matchedIndices *[]int) (bool, int) {
 			// Apply penalty for each letter before the first pattern match
 			// Note: std::max because penalties are negative values. So max is smallest penalty.
 			if ip == 0 {
-				var penalty = max(is*leadingLetterPenalty, maxLeadingLetterPenalty)
-				score += penalty
+				score += max(is*leadingLetterPenalty, maxLeadingLetterPenalty)
 			}
 
 			// Apply bonus for consecutive bonuses
