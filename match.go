@@ -11,7 +11,7 @@ func max(a, b int) int {
 	return a
 }
 
-func Match(pattern, str string, formattedStr *string) (bool, int) {
+func Match(pattern, str string, matchedIndices *[]int) (bool, int) {
 	// Score consts
 	const (
 		adjacencyBonus          = 5  // bonus for adjacent matches
@@ -40,8 +40,6 @@ func Match(pattern, str string, formattedStr *string) (bool, int) {
 	var bestLetterIdx = 0
 	var bestLetterScore = 0
 
-	var matchedIndices []int
-
 	// Loop over strings
 	for is < ls {
 		var cp = rune(0)
@@ -64,7 +62,9 @@ func Match(pattern, str string, formattedStr *string) (bool, int) {
 		var patternRepeat = bestLetter != 0 && cp != 0 && bestLower == patternLower
 		if advanced || patternRepeat {
 			score += bestLetterScore
-			matchedIndices = append(matchedIndices, bestLetterIdx)
+			if matchedIndices != nil {
+				*matchedIndices = append(*matchedIndices, bestLetterIdx)
+			}
 			bestLetter = 0
 			bestLower = 0
 			bestLetterIdx = 0
@@ -131,20 +131,9 @@ func Match(pattern, str string, formattedStr *string) (bool, int) {
 	// Apply score for last match
 	if bestLetter != 0 {
 		score += bestLetterScore
-		matchedIndices = append(matchedIndices, bestLetterIdx)
-	}
-
-	if formattedStr != nil {
-		// Finish out formatted string after last pattern matched
-		// Build formated string based on matched letters
-		li := 0
-		s := ""
-		for _, idx := range matchedIndices {
-			s += string(rs[li:idx-li]) + "<b>" + string(rs[idx]) + "</b>"
-			li = idx + 1
+		if matchedIndices != nil {
+			*matchedIndices = append(*matchedIndices, bestLetterIdx)
 		}
-		s += string(rs[li:])
-		*formattedStr = s
 	}
 
 	return ip == lp, score
