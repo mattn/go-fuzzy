@@ -22,7 +22,7 @@ func main() {
 		rs := []rune(s)
 		li := 0
 		line := ""
-		if m, s := fuzzy.Match(pattern, s, &matched); m {
+		if m, _ := fuzzy.Match(pattern, s, &matched); m {
 			for _, i := range matched {
 				if li < len(rs) {
 					line += string(rs[li:i]) + "\x1b[31m" + string(rs[i]) + "\x1b[0m"
