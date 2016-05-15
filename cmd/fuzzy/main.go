@@ -19,10 +19,10 @@ func main() {
 	for scanner.Scan() {
 		var matched []int
 		s := scanner.Text()
-		rs := []rune(s)
-		li := 0
-		line := ""
 		if m, _ := fuzzy.Match(pattern, s, &matched); m {
+			rs := []rune(s)
+			li := 0
+			line := ""
 			for _, i := range matched {
 				if li < len(rs) {
 					line += string(rs[li:i]) + "\x1b[31m" + string(rs[i]) + "\x1b[0m"
